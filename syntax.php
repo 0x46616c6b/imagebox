@@ -8,39 +8,67 @@ if (!defined('DOKU_PLUGIN')) {
 }
 require_once(DOKU_PLUGIN . 'syntax.php');
 
+/**
+ * Class syntax_plugin_imagebox
+ */
 class syntax_plugin_imagebox extends DokuWiki_Syntax_Plugin
 {
 
+    /**
+     * @return string
+     */
     function getType()
     {
         return 'protected';
     }
 
+    /**
+     * @return array
+     */
     function getAllowedTypes()
     {
         return array('substition', 'protected', 'disabled', 'formatting');
     }
 
+    /**
+     * @return int
+     */
     function getSort()
     {
         return 315;
     }
 
+    /**
+     * @return string
+     */
     function getPType()
     {
         return 'block';
     }
 
+    /**
+     * @param $mode
+     */
     function connectTo($mode)
     {
         $this->Lexer->addEntryPattern('\[\{\{[^\|\}]+\|*(?=[^\}]*\}\}\])', $mode, 'plugin_imagebox');
     }
 
+    /**
+     *
+     */
     function postConnect()
     {
         $this->Lexer->addExitPattern('\}\}\]', 'plugin_imagebox');
     }
 
+    /**
+     * @param string $match
+     * @param int $state
+     * @param int $pos
+     * @param Doku_Handler $handler
+     * @return array|bool
+     */
     function handle($match, $state, $pos, Doku_Handler $handler)
     {
         switch ($state) {
@@ -101,6 +129,12 @@ class syntax_plugin_imagebox extends DokuWiki_Syntax_Plugin
         }
     }
 
+    /**
+     * @param string $mode
+     * @param Doku_Renderer $renderer
+     * @param array $data
+     * @return bool
+     */
     function render($mode, Doku_Renderer $renderer, $data)
     {
         if ($mode == 'xhtml') {
@@ -144,5 +178,3 @@ class syntax_plugin_imagebox extends DokuWiki_Syntax_Plugin
         return false;
     }
 }
-
-//Setup VIM: ex: et ts=4 enc=utf-8 :
